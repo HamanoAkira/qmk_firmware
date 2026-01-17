@@ -48,10 +48,10 @@ layers:
       /,
       ⌘,
       ⌥,
-      ⏎,
+      { t: "⏎", h: "KOM1" },
       NUM,
       NAV,
-      ␣,
+      { t: "␣", h: "FUN" },
       ⌃,
     ]
   NUM:
@@ -59,9 +59,9 @@ layers:
     - { type: none }
     - { type: none }
     - { type: none }
+    - ␣
     - { type: none }
-    - KOM3
-    - { type: none }
+    - ","
     - "9"
     - "8"
     - "7"
@@ -72,20 +72,20 @@ layers:
     - ⌥
     - ⌃
     - ⇧
-    - { type: none }
+    - "-"
     - .
     - "6"
     - "5"
     - "4"
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - /
+    - { type: none }
     - "0"
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - KOM1
-    - { type: none }
     - "3"
     - "2"
     - "1"
@@ -94,8 +94,8 @@ layers:
     - ⌥
     - ⏎
     - { type: mod }
-    - NAV
-    - FUN
+    - SYM
+    - { type: none }
     - ⌃
   FUN:
     - ⇥
@@ -103,7 +103,7 @@ layers:
     - { type: none }
     - { type: none }
     - { type: none }
-    - KOM3
+    - { type: none }
     - F12
     - F9
     - F8
@@ -127,7 +127,7 @@ layers:
     - { type: none }
     - { type: none }
     - { type: none }
-    - KOM1
+    - { type: none }
     - F10
     - F3
     - F2
@@ -136,8 +136,8 @@ layers:
     - { type: none }
     - ⌥
     - ⏎
-    - { type: mod }
-    - NAV
+    - { type: none }
+    - { type: none }
     - { type: mod }
     - ⌃
   NAV:
@@ -149,7 +149,7 @@ layers:
     - { type: none }
     - PRNT UBU
     - PGUP
-    - GUI L
+    - { type: none }
     - CS C
     - { type: none }
     - { type: none }
@@ -273,44 +273,44 @@ layers:
     - { type: none }
     - { type: none }
     - { type: none }
+    - F13 SMIN
+    - F13 SPLU
     - { type: none }
-    - { type: none }
-    - { type: none }
-    - F13 MIN
-    - F13 ENT
-    - F13 I
+    - F13 PM
+    - F13 SFL
+    - F13 SFR
     - F13 Q
     - { type: none }
     - { type: none }
     - { type: none }
+    - F13 TF
     - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
+    - KOM2
+    - ⇧
+    - F13 TMN
     - F13 H
     - F13 J
     - F13 K
     - F13 L
-    - F13 UNS
+    - F13 I
     - { type: none }
     - { type: none }
     - { type: none }
     - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: mod }
+    - F13 MIN
     - F13 PLU
-    - F13 SFL
-    - F13 SFR
     - { type: none }
-    - { type: none }
+    - F13 4
+    - F13 3
+    - F13 2
+    - F13 1
+    - F13 PS
     - { type: none }
     - ⌥
-    - ⏎
     - { type: mod }
-    - KOM2
-    - ⇧
+    - { type: none }
+    - F13 UNS
+    - F13 RT
     - ⌃
   KOM2:
     - { type: none }
@@ -319,16 +319,16 @@ layers:
     - { type: none }
     - { type: none }
     - { type: none }
-    - F13 SMIN
-    - F13 X
-    - F13 Y
+    - { type: none }
+    - F13 SFL
+    - F13 SFR
     - { type: none }
     - { type: none }
     - { type: none }
     - { type: none }
     - { type: none }
     - { type: none }
-    - { type: none }
+    - { type: mod }
     - { type: none }
     - { type: none }
     - F13 LFT
@@ -342,59 +342,16 @@ layers:
     - { type: none }
     - { type: none }
     - { type: none }
-    - { type: mod }
-    - F13 SPLU
     - { type: none }
     - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - ⌥
-    - ⏎
-    - { type: mod }
-    - { type: mod }
-    - ⇧
-    - ⌃
-  KOM3:
-    - { type: none }
+    - F13 X
+    - F13 Y
     - { type: none }
     - { type: none }
     - { type: none }
     - { type: none }
     - { type: mod }
-    - F13 8
-    - F13 7
-    - F13 6
-    - F13 5
     - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - F13 4
-    - F13 3
-    - F13 2
-    - F13 1
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: none }
-    - { type: ghost }
-    - ⌥
-    - ⏎
-    - { type: mod }
-    - { type: none }
-    - ⇧
+    - F13 UNS
+    - F13 RT
     - ⌃
