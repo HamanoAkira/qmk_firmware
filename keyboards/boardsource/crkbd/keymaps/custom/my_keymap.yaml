@@ -1,0 +1,357 @@
+layout: { qmk_keyboard: crkbd/rev1, layout_name: LAYOUT_split_3x6_3 }
+combos:
+  - { p: [27, 28], k: "Copy", l: ["BASE"] }
+  - { p: [26, 27], k: "Paste", l: ["BASE"] }
+  - { p: [26, 28], k: "Cut", l: ["BASE"] }
+  - { p: [15, 16], k: "Esc", l: ["BASE"] }
+  - { p: [14, 15], k: "Undo", l: ["BASE"] }
+  - { p: [19, 20], k: "⌫", l: ["BASE"] }
+  - { p: [20, 21], k: "⏎", l: ["BASE"] }
+  - { p: [31, 32], k: "⌦", l: ["BASE"] }
+layers:
+  BASE:
+    [
+      ⇥,
+      Q,
+      W,
+      E,
+      R,
+      T,
+      Y,
+      U,
+      I,
+      O,
+      P,
+      HOME,
+      ⇧,
+      A,
+      S,
+      D,
+      F,
+      G,
+      H,
+      J,
+      K,
+      L,
+      { t: ";", h: "⇧" },
+      END,
+      ⌃,
+      Z,
+      X,
+      C,
+      V,
+      B,
+      N,
+      M,
+      ",",
+      .,
+      /,
+      ⌘,
+      ⌥,
+      { t: "⏎", h: "KOM1" },
+      NUM,
+      NAV,
+      { t: "␣", h: "FUN" },
+      ⌃,
+    ]
+  NUM:
+    - ⇥
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - ␣
+    - { type: none }
+    - ","
+    - "9"
+    - "8"
+    - "7"
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - ⌘
+    - ⌥
+    - ⌃
+    - ⇧
+    - "-"
+    - .
+    - "6"
+    - "5"
+    - "4"
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - /
+    - { type: none }
+    - "0"
+    - "3"
+    - "2"
+    - "1"
+    - { type: none }
+    - { type: none }
+    - ⌥
+    - ⏎
+    - { type: mod }
+    - SYM
+    - { type: none }
+    - ⌃
+  FUN:
+    - ⇥
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F12
+    - F9
+    - F8
+    - F7
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - ⌘
+    - ⌥
+    - ⌃
+    - ⇧
+    - { type: none }
+    - F11
+    - F6
+    - F5
+    - F4
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F10
+    - F3
+    - F2
+    - F1
+    - { type: none }
+    - { type: none }
+    - ⌥
+    - ⏎
+    - { type: none }
+    - { type: none }
+    - { type: mod }
+    - ⌃
+  NAV:
+    - ⇥
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - PRNT UBU
+    - PGUP
+    - { type: none }
+    - CS C
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - ⌘
+    - ⌥
+    - ⌃
+    - ⇧
+    - { type: none }
+    - "🡰"
+    - "🡳"
+    - "🡱"
+    - "🡲"
+    - SFT ⇥
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - CON
+    - PRNT WIN
+    - PGDN
+    - ALT F4
+    - CS ESC
+    - { type: none }
+    - { type: none }
+    - ⌥
+    - ⏎
+    - SYM
+    - { type: mod }
+    - ␣
+    - ⌃
+  SYM:
+    - CAPS
+    - "!"
+    - "@"
+    - "#"
+    - $
+    - <
+    - ">"
+    - "{"
+    - "}"
+    - "-"
+    - +
+    - { type: none }
+    - { type: none }
+    - "%"
+    - ^
+    - "&"
+    - "*"
+    - '"'
+    - "|"
+    - (
+    - )
+    - "="
+    - _
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - "~"
+    - "`"
+    - "'"
+    - \
+    - "["
+    - "]"
+    - <
+    - ">"
+    - { type: none }
+    - ⌥
+    - ⏎
+    - { type: mod }
+    - { type: mod }
+    - ␣
+    - ⌃
+  CON:
+    - DT PRNT
+    - DT UP
+    - DT DOWN
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - QK BOOT
+    - RGB TOG
+    - RGB HUI
+    - RGB SAI
+    - RGB VAI
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - RGB MOD
+    - RGB HUD
+    - RGB SAD
+    - RGB VAD
+    - { type: none }
+    - { type: mod }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - QK RBT
+    - ⌥
+    - ⏎
+    - { type: none }
+    - { type: mod }
+    - ␣
+    - ⌃
+  KOM1:
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F13 SMIN
+    - F13 SPLU
+    - { type: none }
+    - F13 PM
+    - F13 SFL
+    - F13 SFR
+    - F13 Q
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F13 TF
+    - { type: none }
+    - KOM2
+    - ⇧
+    - F13 TMN
+    - F13 H
+    - F13 J
+    - F13 K
+    - F13 L
+    - F13 I
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F13 MIN
+    - F13 PLU
+    - { type: none }
+    - F13 4
+    - F13 3
+    - F13 2
+    - F13 1
+    - F13 PS
+    - { type: none }
+    - ⌥
+    - { type: mod }
+    - { type: none }
+    - F13 UNS
+    - F13 RT
+    - ⌃
+  KOM2:
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F13 SFL
+    - F13 SFR
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: mod }
+    - { type: none }
+    - { type: none }
+    - F13 LFT
+    - F13 DWN
+    - F13 UP
+    - F13 RGT
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - F13 X
+    - F13 Y
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: none }
+    - { type: mod }
+    - { type: none }
+    - F13 UNS
+    - F13 RT
+    - ⌃
