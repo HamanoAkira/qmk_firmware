@@ -1,8 +1,13 @@
 #pragma once
 
+/* Disable startup tune only, keep audio feature enabled */
+#undef STARTUP_SONG
+#define STARTUP_SONG SONG(NO_SOUND)
+
 /* Tap behavior */
 #define QUICK_TAP_TERM 0
 #define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY
 
 /* RGB matrix defaults */
 #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE

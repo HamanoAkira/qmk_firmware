@@ -8,7 +8,7 @@
 #define CS_C RCS(KC_C)
 #define CS_ESC RCS(KC_ESC)
 #define SPC_2 LT(2, KC_SPC)
-#define ENT_KM1 LT(6, KC_ENT)
+#define ENT_4 LT(4, KC_ENT)
 #define TSPCH10 LT(10, MO(9))
 
 /* Match original Corne animation behavior */
@@ -29,6 +29,7 @@ enum layers {
     layer8,
     layer9,
     layer10,
+    layer11,
 };
 
 enum custom_keycodes {
@@ -37,11 +38,9 @@ enum custom_keycodes {
     F13_J,
     F13_H,
     F13_MIN,
-    F13_ENT,
     F13_I,
     F13_Q,
     F13_UNS,
-    F13_PLU,
     F13_SFL,
     F13_SFR,
     F13_X,
@@ -50,23 +49,15 @@ enum custom_keycodes {
     F13_DWN,
     F13_UP,
     F13_RGT,
-    F13_8,
-    F13_7,
-    F13_6,
-    F13_5,
     F13_4,
     F13_3,
     F13_2,
     F13_1,
     F13_PM,
     F13_PS,
-    F13_SMIN,
-    F13_SPLU,
     F13_TMN,
     F13_TF,
     F13_RT,
-    REDO,
-    ENT_F13,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -78,19 +69,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT, ENT_KM1,   MO(1),      MO(3),   SPC_2, KC_RCTL
+                                          KC_LALT,   ENT_4,   MO(1),      MO(3),   SPC_2, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
 
     [layer1] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX,  KC_SPC, XXXXXXX,                      KC_COMM,    KC_9,    KC_8,    KC_7, XXXXXXX, XXXXXXX,
+       KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX,  KC_SPC,    CS_C,                      KC_COMM,    KC_9,    KC_8,    KC_7, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_LGUI, KC_LALT, KC_RCTL, KC_LSFT, KC_MINS,                       KC_DOT,    KC_6,    KC_5,    KC_4, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLSH,                         KC_0,    KC_3,    KC_2,    KC_1, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,  KC_ENT, _______,      MO(4), XXXXXXX, KC_RCTL
+                                          KC_LALT,  KC_ENT, _______,     MO(11), XXXXXXX, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
 
@@ -114,20 +105,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   MO(5),                     PRNT_WIN, KC_PGDN,  ALT_F4,  CS_ESC, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,  KC_ENT,   MO(4),    _______,  KC_SPC, KC_RCTL
+                                          KC_LALT,  KC_ENT,  MO(11),    _______,  KC_SPC, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
+
+
     [layer4] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       KC_CAPS, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,   KC_LT,                        KC_GT, KC_LCBR, KC_RCBR, KC_MINS, KC_PLUS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,  KC_DQT,                      KC_PIPE, KC_LPRN, KC_RPRN,  KC_EQL, KC_UNDS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        TG(8), XXXXXXX, XXXXXXX, KC_TILD,  KC_GRV, KC_QUOT,                      KC_BSLS, KC_LBRC, KC_RBRC,   KC_LT,   KC_GT, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, KC_TILD,  KC_GRV, KC_QUOT,                      KC_BSLS, KC_LBRC, KC_RBRC,   KC_LT,   KC_GT, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,  KC_ENT, _______,    _______,  KC_SPC, KC_RCTL
+                                          KC_LALT, _______, _______,    _______,  KC_SPC, KC_RCTL
                                       //`--------------------------'  `--------------------------'
-    ),
+  ),
 
     [layer5] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -146,7 +139,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         F13_Q, XXXXXXX, XXXXXXX, F13_SFL,   MO(7),  F13_RT,                       F13_PM, F13_SFL, F13_SFR,   F13_Q, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,   F13_1,   F13_2,   F13_3,   F13_4, F13_TMN,                        F13_H,   F13_J,   F13_K,   F13_L,   F13_I, XXXXXXX,
+      XXXXXXX,   F13_4,   F13_3,   F13_2,   F13_1, F13_TMN,                        F13_H,   F13_J,   F13_K,   F13_L,   F13_I, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, F13_MIN, KC_LSFT,  F13_TF,                        F13_4,   F13_3,   F13_2,   F13_1,  F13_PS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -203,6 +196,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           KC_LALT,  KC_SPC, _______,    _______,   SPC_2, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
+
+  // F13-prefixed layer (hold layer0's MO(1), then MO(11) to reach this)
+    [layer11] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_HOME,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_LSFT, KC_LCTL,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LALT,   ENT_4, _______,    _______,  KC_SPC, KC_RCTL
+                                      //`--------------------------'  `--------------------------'
+    ),
 };
 
 const uint16_t PROGMEM esc_combo[] = {KC_D, KC_F, COMBO_END};
@@ -216,6 +222,7 @@ const uint16_t PROGMEM del_combo[] = {KC_M, KC_COMM, COMBO_END};
 const uint16_t PROGMEM right_alt_combo[] = {KC_N, KC_M, COMBO_END};
 const uint16_t PROGMEM right_sft_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM spc_combo[] = {KC_S, KC_F, COMBO_END};
+const uint16_t PROGMEM ctrl_combo[] = {KC_L, KC_SCLN, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(esc_combo, KC_ESC),
@@ -229,6 +236,7 @@ combo_t key_combos[] = {
     COMBO(right_alt_combo, KC_RALT),
     COMBO(right_sft_combo, KC_RSFT),
     COMBO(spc_combo, KC_SPC),
+    COMBO(ctrl_combo, KC_RCTL),
 };
 
 static bool process_f13_code(uint16_t base_keycode, keyrecord_t *record) {
@@ -237,17 +245,6 @@ static bool process_f13_code(uint16_t base_keycode, keyrecord_t *record) {
         register_code(base_keycode);
     } else {
         unregister_code(base_keycode);
-        unregister_code(KC_F13);
-    }
-    return false;
-}
-
-static bool process_f13_code16(uint16_t base_keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        register_code(KC_F13);
-        register_code16(base_keycode);
-    } else {
-        unregister_code16(base_keycode);
         unregister_code(KC_F13);
     }
     return false;
@@ -266,37 +263,61 @@ static bool process_f13_shift_code(uint16_t base_keycode, keyrecord_t *record) {
     return false;
 }
 
-static bool process_f13_shift_code16(uint16_t base_keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        register_code(KC_F13);
-        register_code16(base_keycode);
-    } else {
-        unregister_code16(base_keycode);
-        unregister_code(KC_F13);
+static bool rgb_sleeping = false;
+
+static uint8_t f13_hold_count = 0;
+static bool    f13_active_for_key[MATRIX_ROWS][MATRIX_COLS];
+
+void housekeeping_task_user(void) {
+#ifdef RGB_MATRIX_ENABLE
+    if (timer_elapsed32(idle_timer) > 60000) {
+        if (!rgb_sleeping) {
+            rgb_sleeping = true;
+            rgb_matrix_disable_noeeprom();
+        }
     }
-    return false;
+#endif
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         idle_timer = timer_read32();
+#ifdef RGB_MATRIX_ENABLE
+        if (rgb_sleeping) {
+            rgb_sleeping = false;
+            rgb_matrix_enable_noeeprom();
+        }
+#endif
 #ifdef OLED_ENABLE
         oled_on();
 #endif
     }
 
-    switch (keycode) {
-        case REDO:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                register_code(KC_LSFT);
-                register_code(KC_Z);
+    {
+        uint8_t row         = record->event.key.row;
+        uint8_t col         = record->event.key.col;
+        bool    is_thumb_row = (row == 3 || row == 7);
+
+        if (record->event.pressed) {
+            if (get_highest_layer(layer_state) == layer11 && !is_thumb_row) {
+                f13_active_for_key[row][col] = true;
+                if (f13_hold_count == 0) {
+                    register_code(KC_F13);
+                }
+                f13_hold_count++;
             } else {
-                unregister_code(KC_Z);
-                unregister_code(KC_LSFT);
-                unregister_code(KC_LCTL);
+                f13_active_for_key[row][col] = false;
             }
-            return false;
+        } else if (f13_active_for_key[row][col]) {
+            f13_active_for_key[row][col] = false;
+            f13_hold_count--;
+            if (f13_hold_count == 0) {
+                unregister_code(KC_F13);
+            }
+        }
+    }
+
+    switch (keycode) {
         case F13_L:
             return process_f13_code(KC_L, record);
         case F13_UNS:
@@ -313,8 +334,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return process_f13_code(KC_Q, record);
         case F13_MIN:
             return process_f13_code(KC_MINS, record);
-        case F13_PLU:
-            return process_f13_code16(KC_EQL, record);
         case F13_SFL:
             return process_f13_code(KC_LBRC, record);
         case F13_SFR:
@@ -331,14 +350,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return process_f13_code(KC_UP, record);
         case F13_RGT:
             return process_f13_code(KC_RGHT, record);
-        case F13_8:
-            return process_f13_code(KC_8, record);
-        case F13_7:
-            return process_f13_code(KC_7, record);
-        case F13_6:
-            return process_f13_code(KC_6, record);
-        case F13_5:
-            return process_f13_code(KC_5, record);
         case F13_4:
             return process_f13_code(KC_4, record);
         case F13_3:
@@ -347,12 +358,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return process_f13_code(KC_2, record);
         case F13_1:
             return process_f13_code(KC_1, record);
-        case F13_ENT:
-            return process_f13_code(KC_ENT, record);
-        case F13_SMIN:
-            return process_f13_shift_code(KC_MINS, record);
-        case F13_SPLU:
-            return process_f13_shift_code16(KC_PLUS, record);
         case F13_PM:
             return process_f13_shift_code(KC_ENT, record);
         case F13_PS:
@@ -370,16 +375,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef OLED_ENABLE
 #include "ame.c"
-
-void keyboard_post_init_user(void) {
-    idle_timer = timer_read32();
-}
+#include "lib/oled.h"
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_render_anim();
-        return false;
     }
-    return true;
+    return false;
 }
 #endif
