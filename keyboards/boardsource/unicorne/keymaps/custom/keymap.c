@@ -8,8 +8,6 @@
 #define CS_C RCS(KC_C)
 #define CS_ESC RCS(KC_ESC)
 #define SPC_2 LT(2, KC_SPC)
-#define ENT_4 LT(4, KC_ENT)
-#define TSPCH10 LT(10, MO(9))
 
 /* Match original Corne animation behavior */
 #define ANIM_INVERT false
@@ -30,6 +28,7 @@ enum layers {
     layer9,
     layer10,
     layer11,
+    layer12,
 };
 
 enum custom_keycodes {
@@ -69,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,   ENT_4,   MO(1),      MO(3),   SPC_2, KC_RCTL
+                                          KC_LALT,  KC_ENT,   MO(1),      MO(3),   SPC_2, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
 
@@ -79,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_LGUI, KC_LALT, KC_RCTL, KC_LSFT, KC_MINS,                       KC_DOT,    KC_6,    KC_5,    KC_4, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLSH,                         KC_0,    KC_3,    KC_2,    KC_1, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   MO(12), KC_SLSH,                         KC_0,    KC_3,    KC_2,    KC_1, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LALT,  KC_ENT, _______,     MO(11), XXXXXXX, KC_RCTL
                                       //`--------------------------'  `--------------------------'
@@ -99,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [layer3] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     PRNT_UBU, KC_PGUP, XXXXXXX,    CS_C, XXXXXXX, XXXXXXX,
+       KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     PRNT_UBU, KC_PGUP,   MO(4),    CS_C, XXXXXXX, TG(layer8),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_LGUI, KC_LALT, KC_RCTL, KC_LSFT, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, SFT_TAB, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -112,11 +111,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [layer4] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      KC_CAPS, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,   KC_LT,                        KC_GT, KC_LCBR, KC_RCBR, KC_MINS, KC_PLUS, XXXXXXX,
+      KC_CAPS, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,   KC_LT,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,  KC_DQT,                      KC_PIPE, KC_LPRN, KC_RPRN,  KC_EQL, KC_UNDS, XXXXXXX,
+      XXXXXXX, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,  KC_DQT,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, KC_TILD,  KC_GRV, KC_QUOT,                      KC_BSLS, KC_LBRC, KC_RBRC,   KC_LT,   KC_GT, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, KC_TILD,  KC_GRV, KC_QUOT,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LALT, _______, _______,    _______,  KC_SPC, KC_RCTL
                                       //`--------------------------'  `--------------------------'
@@ -160,40 +159,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
     ),
 
-  // gaming layers
+  // gaming layer: layer0 minus combos, enter/space swapped, Num/Alt hold into gaming2/gaming3
+  // toggled on/off via Nav + Home (layer3's Home position is TG(layer8))
+  // left ctrl replaced with alt (right half still has KC_RCTL on the thumb)
     [layer8] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_HOME,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_END,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
+      KC_LALT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           MO(10), TSPCH10,   MO(9),    _______,   SPC_2, KC_RCTL
+                                           MO(10),   SPC_2,   MO(9),      MO(3),  KC_ENT, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
 
+  // gaming2: numbers overlay, hold Num (layer8's MO(9)). a s d f z x c v e r -> 1 2 3 4 5 6 7 8 9 0, g -> esc, tab -> `
     [layer9] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4, _______,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_HOME,
+       KC_GRV, _______, _______,    KC_9,    KC_0, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_5,    KC_6,    KC_7,    KC_8, _______,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_END,
+      _______,    KC_1,    KC_2,    KC_3,    KC_4,  KC_ESC,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,    KC_9,    KC_0, _______, _______,   TG(8),                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
+      _______,    KC_5,    KC_6,    KC_7,    KC_8, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,  KC_SPC, _______,    _______,   SPC_2, KC_RCTL
+                                          _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
     ),
 
+  // gaming3: F-keys overlay, hold Alt (layer8's MO(10)). a s d f z x c v e r -> F1 F2 F3 F4 F5 F6 F7 F8 F9 F10
     [layer10] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,   KC_F1,   KC_F2,   KC_F3,   KC_F4, _______,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_HOME,
+      _______, _______, _______,   KC_F9,  KC_F10, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,   KC_F5,   KC_F6,   KC_F7,   KC_F8, _______,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_END,
+      _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,   KC_F9,  KC_F10,  KC_F11,  KC_F12, _______,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
+      _______,   KC_F5,   KC_F6,   KC_F7,   KC_F8, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,  KC_SPC, _______,    _______,   SPC_2, KC_RCTL
+                                          _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
     ),
 
@@ -206,7 +209,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LGUI,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,   ENT_4, _______,    _______,  KC_SPC, KC_RCTL
+                                          KC_LALT,  KC_ENT, _______,    _______,  KC_SPC, KC_RCTL
+                                      //`--------------------------'  `--------------------------'
+    ),
+
+  // right-hand symbols (hold layer1's V key, or layer3's V key)
+    [layer12] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                        KC_GT, KC_LCBR, KC_RCBR, KC_MINS, KC_PLUS, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_PIPE, KC_LPRN, KC_RPRN,  KC_EQL, KC_UNDS, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_BSLS, KC_LBRC, KC_RBRC,   KC_LT,   KC_GT, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          _______, _______, _______,    _______,  KC_SPC, KC_RCTL
                                       //`--------------------------'  `--------------------------'
     ),
 };
@@ -224,20 +240,40 @@ const uint16_t PROGMEM right_sft_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM spc_combo[] = {KC_S, KC_F, COMBO_END};
 const uint16_t PROGMEM ctrl_combo[] = {KC_L, KC_SCLN, COMBO_END};
 
-combo_t key_combos[] = {
-    COMBO(esc_combo, KC_ESC),
-    COMBO(back_combo, KC_BSPC),
-    COMBO(copy_combo, LCTL(KC_C)),
-    COMBO(cut_combo, LCTL(KC_X)),
-    COMBO(paste_combo, LCTL(KC_V)),
-    COMBO(ent_combo, KC_ENT),
-    COMBO(undo_combo, LCTL(KC_Z)),
-    COMBO(del_combo, KC_DEL),
-    COMBO(right_alt_combo, KC_RALT),
-    COMBO(right_sft_combo, KC_RSFT),
-    COMBO(spc_combo, KC_SPC),
-    COMBO(ctrl_combo, KC_RCTL),
+enum combo_indices {
+    ESC_COMBO_IDX,
+    BACK_COMBO_IDX,
+    COPY_COMBO_IDX,
+    CUT_COMBO_IDX,
+    PASTE_COMBO_IDX,
+    ENT_COMBO_IDX,
+    UNDO_COMBO_IDX,
+    DEL_COMBO_IDX,
+    RIGHT_ALT_COMBO_IDX,
+    RIGHT_SFT_COMBO_IDX,
+    SPC_COMBO_IDX,
+    CTRL_COMBO_IDX,
 };
+
+combo_t key_combos[] = {
+    [ESC_COMBO_IDX]         = COMBO(esc_combo, KC_ESC),
+    [BACK_COMBO_IDX]        = COMBO(back_combo, KC_BSPC),
+    [COPY_COMBO_IDX]        = COMBO(copy_combo, LCTL(KC_C)),
+    [CUT_COMBO_IDX]         = COMBO(cut_combo, LCTL(KC_X)),
+    [PASTE_COMBO_IDX]       = COMBO(paste_combo, LCTL(KC_V)),
+    [ENT_COMBO_IDX]         = COMBO(ent_combo, KC_ENT),
+    [UNDO_COMBO_IDX]        = COMBO(undo_combo, LCTL(KC_Z)),
+    [DEL_COMBO_IDX]         = COMBO(del_combo, KC_DEL),
+    [RIGHT_ALT_COMBO_IDX]   = COMBO(right_alt_combo, KC_RALT),
+    [RIGHT_SFT_COMBO_IDX]   = COMBO(right_sft_combo, KC_RSFT),
+    [SPC_COMBO_IDX]         = COMBO(spc_combo, KC_SPC),
+    [CTRL_COMBO_IDX]        = COMBO(ctrl_combo, KC_RCTL),
+};
+
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    uint8_t highest_layer = get_highest_layer(layer_state);
+    return highest_layer != layer8 && highest_layer != layer9 && highest_layer != layer10;
+}
 
 static bool process_f13_code(uint16_t base_keycode, keyrecord_t *record) {
     if (record->event.pressed) {
