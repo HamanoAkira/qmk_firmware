@@ -30,3 +30,6 @@
 
 /* Optional VIA layer count override */
 #define DYNAMIC_KEYMAP_LAYER_COUNT 5
+
+/* RPC transaction so the master can push the last-pressed key to the slave OLED */
+#define SPLIT_TRANSACTION_IDS_USER RPC_ID_KEY_DISPLAY

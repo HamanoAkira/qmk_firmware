@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "global_vars.h"
+#include "transactions.h"
+#include <string.h>
 
 #define PRNT_WIN LGUI(LSFT(KC_S))
 #define PRNT_UBU LCTL(KC_LBRC)
@@ -304,6 +306,254 @@ static bool rgb_sleeping = false;
 static uint8_t f13_hold_count = 0;
 static bool    f13_active_for_key[MATRIX_ROWS][MATRIX_COLS];
 
+static bool key_display_dirty = false;
+
+/* Right OLED key display: translate the custom F13-prefixed keycodes to a
+ * short "F13+<key>" label, matching what process_f13_code/process_f13_shift_code
+ * actually register. */
+static bool f13_display_name(uint16_t keycode, char *out, size_t outlen) {
+    switch (keycode) {
+        case F13_L:
+            snprintf(out, outlen, "F13+L");
+            return true;
+        case F13_UNS:
+            snprintf(out, outlen, "F13+;");
+            return true;
+        case F13_K:
+            snprintf(out, outlen, "F13+K");
+            return true;
+        case F13_J:
+            snprintf(out, outlen, "F13+J");
+            return true;
+        case F13_H:
+            snprintf(out, outlen, "F13+H");
+            return true;
+        case F13_I:
+            snprintf(out, outlen, "F13+I");
+            return true;
+        case F13_Q:
+            snprintf(out, outlen, "F13+Q");
+            return true;
+        case F13_MIN:
+            snprintf(out, outlen, "F13+-");
+            return true;
+        case F13_SFL:
+            snprintf(out, outlen, "F13+[");
+            return true;
+        case F13_SFR:
+            snprintf(out, outlen, "F13+]");
+            return true;
+        case F13_X:
+            snprintf(out, outlen, "F13+X");
+            return true;
+        case F13_Y:
+            snprintf(out, outlen, "F13+Y");
+            return true;
+        case F13_LFT:
+            snprintf(out, outlen, "F13+Left");
+            return true;
+        case F13_DWN:
+            snprintf(out, outlen, "F13+Down");
+            return true;
+        case F13_UP:
+            snprintf(out, outlen, "F13+Up");
+            return true;
+        case F13_RGT:
+            snprintf(out, outlen, "F13+Right");
+            return true;
+        case F13_4:
+            snprintf(out, outlen, "F13+4");
+            return true;
+        case F13_3:
+            snprintf(out, outlen, "F13+3");
+            return true;
+        case F13_2:
+            snprintf(out, outlen, "F13+2");
+            return true;
+        case F13_1:
+            snprintf(out, outlen, "F13+1");
+            return true;
+        case F13_PM:
+            snprintf(out, outlen, "F13+S-Ent");
+            return true;
+        case F13_PS:
+            snprintf(out, outlen, "F13+P");
+            return true;
+        case F13_TMN:
+            snprintf(out, outlen, "F13+S-F");
+            return true;
+        case F13_TF:
+            snprintf(out, outlen, "F13+T");
+            return true;
+        case F13_RT:
+            snprintf(out, outlen, "F13+S-R");
+            return true;
+        default:
+            return false;
+    }
+}
+
+/* Formats a plain basic keycode + currently-held mods the way neovim/which-key
+ * shows a keypress: literal char for letters/digits/punctuation/space (case/
+ * symbol already reflects shift), "<name>" for non-printable keys, and a
+ * "<C-A-G-...>" prefix added whenever ctrl/alt/gui are held (shift only gets
+ * its own "S-" prefix for the non-printable "<name>" keys, since it's baked
+ * into the char otherwise). Returns false for anything it doesn't recognize. */
+static bool basic_key_display(uint16_t keycode, uint8_t mods, char *out, size_t outlen) {
+    char       core[8]     = {0};
+    bool       named       = false;
+    const bool has_shift   = mods & MOD_MASK_SHIFT;
+
+    if (keycode >= KC_A && keycode <= KC_Z) {
+        core[0] = (has_shift ? 'A' : 'a') + (keycode - KC_A);
+    } else if (keycode >= KC_1 && keycode <= KC_0) {
+        static const char digits[10]  = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+        static const char shifted[10] = {'!', '@', '#', '$', '%', '^', '&', '*', '(', ')'};
+        uint8_t            idx        = keycode - KC_1;
+        core[0]                       = has_shift ? shifted[idx] : digits[idx];
+    } else if (keycode == KC_SPC) {
+        /* A plain space, not the bracket-named "<Space>" - the 3-key ticker
+         * needs this to stay one character wide. */
+        core[0] = ' ';
+    } else {
+        static const struct {
+            uint16_t kc;
+            char     norm;
+            char     shift;
+        } punct[] = {
+            {KC_COMM, ',', '<'}, {KC_DOT, '.', '>'}, {KC_SLSH, '/', '?'}, {KC_SCLN, ';', ':'}, {KC_QUOT, '\'', '"'}, {KC_MINS, '-', '_'}, {KC_EQL, '=', '+'}, {KC_LBRC, '[', '{'}, {KC_RBRC, ']', '}'}, {KC_BSLS, '\\', '|'}, {KC_GRV, '`', '~'},
+        };
+        bool found = false;
+        for (uint8_t i = 0; i < ARRAY_SIZE(punct); i++) {
+            if (punct[i].kc == keycode) {
+                core[0] = has_shift ? punct[i].shift : punct[i].norm;
+                found   = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            static const struct {
+                uint16_t    kc;
+                const char *name;
+            } names[] = {
+                {KC_ENT, "CR"}, {KC_ESC, "Esc"}, {KC_TAB, "Tab"}, {KC_BSPC, "BS"}, {KC_DEL, "Del"}, {KC_LEFT, "Left"}, {KC_RGHT, "Right"}, {KC_UP, "Up"}, {KC_DOWN, "Down"}, {KC_HOME, "Home"}, {KC_END, "End"}, {KC_PGUP, "PgUp"}, {KC_PGDN, "PgDn"}, {KC_CAPS, "Caps"}, {KC_INS, "Ins"}, {KC_F1, "F1"}, {KC_F2, "F2"}, {KC_F3, "F3"}, {KC_F4, "F4"}, {KC_F5, "F5"}, {KC_F6, "F6"}, {KC_F7, "F7"}, {KC_F8, "F8"}, {KC_F9, "F9"}, {KC_F10, "F10"}, {KC_F11, "F11"}, {KC_F12, "F12"},
+            };
+            for (uint8_t i = 0; i < ARRAY_SIZE(names); i++) {
+                if (names[i].kc == keycode) {
+                    snprintf(core, sizeof(core), "%s", names[i].name);
+                    named = true;
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            return false;
+        }
+    }
+
+    char   prefix[8] = {0};
+    size_t plen      = 0;
+    if (mods & MOD_MASK_CTRL) plen += snprintf(prefix + plen, sizeof(prefix) - plen, "C-");
+    if (mods & MOD_MASK_ALT) plen += snprintf(prefix + plen, sizeof(prefix) - plen, "A-");
+    if (mods & MOD_MASK_GUI) plen += snprintf(prefix + plen, sizeof(prefix) - plen, "G-");
+    if (named && has_shift) plen += snprintf(prefix + plen, sizeof(prefix) - plen, "S-");
+
+    if (named || prefix[0] != '\0') {
+        snprintf(out, outlen, "<%s%s>", prefix, core);
+    } else {
+        snprintf(out, outlen, "%s", core);
+    }
+    return true;
+}
+
+/* Last 4 keys shown together as a short ticker, e.g. typing "this is a"
+ * shows "is a" (oldest on the left), matching neovim/which-key style key
+ * history rather than a single flashing keypress. */
+static char     key_history[4][10]  = {{0}};
+static uint8_t  key_history_idx     = 0;
+static uint32_t last_key_press_time = 0;
+
+/* Skips layer/momentary/combo-produced keycodes on purpose: the top of the
+ * right OLED already shows the active layer, so the ticker only needs to
+ * track keys that actually produce output. */
+static void update_key_display(uint16_t keycode, keyrecord_t *record) {
+    char text[sizeof(key_history[0])] = {0};
+
+    /* LT(layer, kc)/MT(mod, kc) always deliver the *wrapping* keycode to
+     * process_record_user, never the plain kc - so e.g. SPC_2 = LT(2, KC_SPC)
+     * never satisfies IS_BASIC_KEYCODE below and got silently skipped even
+     * when tapped (producing a real space). record->tap.count > 0 means this
+     * particular press resolved to a tap, so pull the wrapped keycode back
+     * out (LT/MT both pack it into the low byte, see quantum_keycodes.h) and
+     * treat it like any other basic key. A tap.count of 0 means it's being
+     * held for the layer/mod instead, which the layer name up top covers. */
+    if (IS_QK_LAYER_TAP(keycode) || IS_QK_MOD_TAP(keycode)) {
+        if (record->tap.count == 0) {
+            return;
+        }
+        keycode = keycode & 0xFF;
+    }
+
+    /* Symbol aliases like KC_AT/KC_HASH/KC_TILD aren't their own keycode -
+     * they're compile-time `LSFT(base_kc)` values (e.g. KC_AT == LSFT(KC_2)),
+     * baked into the keymap rather than a physically-held shift. That fails
+     * IS_BASIC_KEYCODE below just like LT/MT did, so unwrap it the same way:
+     * pull the embedded mod and base keycode back out and let
+     * basic_key_display's existing shift-aware tables (KC_2+shift='@',
+     * KC_GRV+shift='~', ...) do the rest. */
+    uint8_t extra_mods = 0;
+    if (IS_QK_MODS(keycode)) {
+        extra_mods = QK_MODS_GET_MODS(keycode);
+        keycode    = QK_MODS_GET_BASIC_KEYCODE(keycode);
+    }
+
+    if (!f13_display_name(keycode, text, sizeof(text))) {
+        if (!IS_BASIC_KEYCODE(keycode) || IS_MODIFIER_KEYCODE(keycode)) {
+            return;
+        }
+        if (!basic_key_display(keycode, get_mods() | extra_mods, text, sizeof(text))) {
+            return;
+        }
+    }
+
+    /* If the ticker already faded out on screen (unicorne.c's
+     * render_layer_and_key blanks it after the same 2000ms), don't glue the
+     * new key onto the stale history sitting in the ring buffer - start
+     * clean so only keys typed since the fade show up. */
+    if (timer_elapsed32(last_key_press_time) > 2000) {
+        memset(key_history, 0, sizeof(key_history));
+        key_history_idx = 0;
+    }
+    last_key_press_time = timer_read32();
+
+    snprintf(key_history[key_history_idx], sizeof(key_history[0]), "%s", text);
+    key_history_idx = (key_history_idx + 1) % 4;
+
+    key_display.text[0] = '\0';
+    for (uint8_t i = 0; i < 4; i++) {
+        uint8_t idx = (key_history_idx + i) % 4;
+        size_t  len = strlen(key_display.text);
+        snprintf(key_display.text + len, sizeof(key_display.text) - len, "%s", key_history[idx]);
+    }
+
+    key_display.seq++;
+    key_display_dirty = true;
+}
+
+static void key_display_slave_handler(uint8_t in_buflen, const void *in_data, uint8_t out_buflen, void *out_data) {
+    if (in_buflen == sizeof(key_display)) {
+        memcpy(&key_display, in_data, sizeof(key_display));
+        key_display_updated_at = timer_read32();
+    }
+}
+
+void keyboard_post_init_user(void) {
+    transaction_register_rpc(RPC_ID_KEY_DISPLAY, key_display_slave_handler);
+}
+
 void housekeeping_task_user(void) {
 #ifdef RGB_MATRIX_ENABLE
     if (timer_elapsed32(idle_timer) > 60000) {
@@ -313,11 +563,33 @@ void housekeeping_task_user(void) {
         }
     }
 #endif
+
+    /* transaction_rpc_send blocks on 4 back-to-back serial round-trips over the
+     * same single-wire link the split transport uses to poll the right half's
+     * matrix (see quantum/split_common/transactions.c: transaction_rpc_exec).
+     * Firing it on every keystroke starved that polling and dropped keys from
+     * the right half, so this is throttled per the QMK docs' recommendation
+     * (docs/features/split_keyboard.md, "Custom data sync between sides"). */
+    static uint32_t last_key_display_sync = 0;
+    if (is_keyboard_master() && key_display_dirty && timer_elapsed32(last_key_display_sync) > 150) {
+        /* Reset the throttle timer up front, on every attempt, not just on
+         * success - if the send keeps failing (e.g. transport not connected
+         * yet) and we only reset on success, this retries as fast as the
+         * main loop spins instead of every 150ms, busy-looping on serial
+         * I/O and starving matrix scanning for both halves. */
+        last_key_display_sync = timer_read32();
+        if (transaction_rpc_send(RPC_ID_KEY_DISPLAY, sizeof(key_display), &key_display)) {
+            key_display_dirty = false;
+        } else {
+            dprint("[master] key_display RPC send failed\n");
+        }
+    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         idle_timer = timer_read32();
+        update_key_display(keycode, record);
 #ifdef RGB_MATRIX_ENABLE
         if (rgb_sleeping) {
             rgb_sleeping = false;
